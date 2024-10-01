@@ -1,34 +1,20 @@
-import {onStartScraping, reportActionRequest } from '@internwave/scrapers-api';
+import { API } from '@internwave/scrapers-api';
 import puppeteer from "puppeteer";
-import { getTableRows } from 'src/scraping/getTableRows';
-import { handleLogin } from 'src/scraping/handleLogin';
-import { setupUserData } from 'src/setup/setupUserData';
+import { login } from 'src/scraping/login/login';
+import { scrapeGraduateTable } from 'src/scraping/scrapeGraduateTable/scrapeGraduateTable';
 
-
-
-onStartScraping(async ({optionValues})=>{
+API.onStartScraping(3)(async (args, progressReporter)=>{
     const browser = await puppeteer.launch({ 
         headless: false,
-        userDataDir: setupUserData(optionValues[1] === "true")
+        defaultViewport: null,
     });
     const page = await browser.newPage();
-    reportActionRequest("Login to Waterlooworks")
-    await handleLogin(page);
-    const tableRows = await getTableRows(page);
-    //DEBUG
-    const idMap: Record<string, number> = {}
-    tableRows.forEach((row)=>{
-        if(!idMap[row.id]){
-            idMap[row.id] = 0;
-        }
-        idMap[row.id]++;
-    })
-    const duplicateIds = Object.entries(idMap).filter(([, count])=>count>1);
-    console.log(tableRows)
-    console.log("Duplicate IDs: ", duplicateIds)
-    console.log("Total: ", tableRows.length)
-    await new Promise((resolve) => {
-        browser.on('disconnected', resolve);
-    });
-    
+    await page.setJavaScriptEnabled(true);
+    await login(page, progressReporter, args[1] === "true");
+    switch(args[0]){
+        case "Graduating and Full-Time":
+            return scrapeGraduateTable(page, progressReporter);
+        default:
+            return []
+    }
 })

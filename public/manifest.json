@@ -2,13 +2,13 @@
     "name": "UWaterloo: Waterloo Works", 
     "image": "logo.png", 
     "originURL": "https://waterlooworks.uwaterloo.ca/home.htm", 
-    "lastUpdated": 123123123123,
+    "lastUpdated": 1725658450241,
     "main": "index.js",
     "options" : [
         {
             "label": "Jobs board",
             "type": "Select",
-            "selectOptions": ["Co-op", "Full-time"],
+            "selectOptions": ["Co-op", "Graduating and Full-Time"],
             "required": true
         },
         {
