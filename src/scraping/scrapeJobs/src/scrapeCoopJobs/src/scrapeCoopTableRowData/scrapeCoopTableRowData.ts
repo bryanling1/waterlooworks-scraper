@@ -12,17 +12,19 @@ export const scrapeCoopTableRowData = async (tr: ElementHandle<Element>): Promis
     if(!id || !jobTitle || !organization || !requestBody){
         return
     }
-    const positionType = await scrapeTdData(tds[6]);
-    const city = await scrapeTdData(tds[8]);
-    const appDeadline = await scrapeTdData(tds[9]);
+    const openings = await scrapeTdData(tds[6]);
+    const status = await scrapeTdData(tds[7]);
+    const applications = await scrapeTdData(tds[10]);
+    const appDeadline = await scrapeTdData(tds[11]);
     
     return {
         id: id.trim(),
         jobTitle: jobTitle.trim(),
         organization: organization.trim(),
-        positionType: positionType?.trim(),
-        city: city?.trim(),
+        requestBody,
         appDeadline: appDeadline ? new Date(appDeadline.trim()).getTime() : undefined,
-        requestBody
+        openings: openings ? parseInt(openings.trim()) : undefined,
+        status: status?.trim(),
+        applications: applications ? parseInt(applications.trim()) : undefined
     }
 }
