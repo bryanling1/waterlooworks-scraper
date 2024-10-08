@@ -1,26 +1,17 @@
 import { IScrapedJob } from "@internwave/scrapers-api";
 import { Page } from "puppeteer";
-import { Selectors } from "src/constants/Selectors";
-import { navigateToOverviewTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/src/navigateToOverviewTab";
 import { scrapeOverviewPanelTable } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/src/scrapeOverviewPanelTable";
-import { IGraduateJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
 import { JobDataTableKnownKey, parseJobDataTable } from "src/utils/scraping/parsing/parseTableValue/parseTableValue";
 
-type ScrapedJobOverviewTab = Omit<IScrapedJob, "company" | "id" | "charts"  | "location">;
+type ScrapedJobOverviewTab = Omit<IScrapedJob, "company" | "id" | "charts"  | "location" | "jobTitle">;
 export const scrapeOverviewTab = async (
     page: Page,
-    tableRow:  IGraduateJobTableRow
+    webpageStr: string
 ):Promise<ScrapedJobOverviewTab > => {    
-    await navigateToOverviewTab(page, tableRow.requestBody);
-    await page.waitForSelector(
-        Selectors.JobPosting.TableRows(1)
-    )
-    const jobPostingInfoTableData = await scrapeOverviewPanelTable(page, 1);
-    const applicationDeliveryTableData = await scrapeOverviewPanelTable(page, 2);
-    //const companyInfoTableData = await scrapeOverviewPanelTable(page, 3);
+    const jobPostingInfoTableData = await scrapeOverviewPanelTable(page, webpageStr, 1);
+    const applicationDeliveryTableData = await scrapeOverviewPanelTable(page, webpageStr, 2);
 
     const out: ScrapedJobOverviewTab = {
-        jobTitle: tableRow.jobTitle,
         dates: {},
         categorizations: {},
         descriptions: []
@@ -29,14 +20,20 @@ export const scrapeOverviewTab = async (
     for(const key in jobPostingInfoTableData){
         const value = jobPostingInfoTableData[key];
         switch(key){
-            case JobDataTableKnownKey.JobType:
+            case JobDataTableKnownKey.JobType: {
+                const val = parseJobDataTable(key, value)
+                if(val === undefined) break;
+                out.jobType = [val];
+                break;
+            }     
             case JobDataTableKnownKey.JobTitle:
                 break; //already scraped from table row
-            case JobDataTableKnownKey.JobOpenings:
+            case JobDataTableKnownKey.JobOpenings: {
                 const val = parseJobDataTable(key, value)
                 if(val === undefined) break;
                 out.openings = val;
                 break;
+            }
             default:
                 out.descriptions.push({
                     title: key,

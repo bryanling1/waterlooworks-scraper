@@ -1,24 +1,31 @@
 import { IChartData, ICharts } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
-import { Selectors } from "src/constants/Selectors";
-import { scrapeBarChart } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/scrapeBarChart/scrapeBarChart";
-import { scrapeChartTitle } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/scrapeChartTitle";
-import { scrapePieChart } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/scrapePieChart/scrapePieChart";
+import { convertBarChartData } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/convertBarChartData/convertBarChartData";
+import { convertPieChartData } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/convertPieChartData/convertPieChartData";
+import { IScrapedBarChart, IScrapedPieChart, ScrapedChart } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/types/ScrapedChart";
+import { parseJSData } from "src/utils/scraping/parsing/parseJSData/parseJSData";
+import { getGroupMatches } from "src/utils/strings/getGroupMatches";
 
-export const scrapeCharts = async (page: Page, totalHires: number): Promise<ICharts> => {
+function assertType<T>(value: unknown): asserts value is T {}
+
+
+export const scrapeCharts = async (
+    webPageStr: string, 
+    totalHires: number
+): Promise<ICharts> => {
     const out: ICharts = {};
-    const charts = await page.$$(Selectors.JobPosting.WorkTermRating.Charts)
+    const charts = getGroupMatches(/\.orbisChart\(\s*({[\s\S]*?})*\);/g, webPageStr);
     for(const chart of charts){
-        const title = await scrapeChartTitle(page, chart);
-        if(!title){
-            continue;
-        }
+        const chartObj = parseJSData<ScrapedChart>(chart)
         let chartData: IChartData | undefined = undefined;
-        const id = await page.evaluate(chart => chart.id, chart);
-        if(id.startsWith('pie')){
-            chartData = await scrapePieChart(page, chart, totalHires);
-        }else if(id.startsWith('bar')){
-            chartData = await scrapeBarChart(page, chart);
+        switch(chartObj.chart.type){
+            case "pie":
+                assertType<IScrapedPieChart>(chartObj);
+                chartData = convertPieChartData(chartObj, totalHires);
+                break;
+            case "bar":
+                assertType<IScrapedBarChart>(chartObj);
+                chartData = convertBarChartData(chartObj);
+                break;
         }
         if(chartData){
             out[chartData.title] = chartData;

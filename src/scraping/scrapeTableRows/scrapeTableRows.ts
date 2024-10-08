@@ -1,18 +1,21 @@
 import { ProgressReporter } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 import { Selectors } from "src/constants/Selectors";
-import { scrapeTableRowData } from "src/scraping/scrapeTableRows/src/scrapeTableRowData";
 import { scrapeJobTableTotalResults } from "src/scraping/scrapeTableRows/src/scrapeJobTableTotalResults";
 import { gotoNextTablePage } from "src/scraping/scrapeTableRows/src/gotoNextTablePage";
 import { waitForTablePageLoad } from "src/scraping/scrapeTableRows/src/waitForTablePageLoad";
-import { IGraduateJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
 import { navigateToFirstTablePage } from "src/scraping/scrapeTableRows/src/navigateToFirstTablePage";
 import { TIMEOUT } from "src/constants/Timeout";
+import { IJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
 
 
-export const scrapeTableRows = async (page: Page, progressReporter: ProgressReporter):Promise<IGraduateJobTableRow[]> => {
+export const scrapeTableRows = async <T extends IJobTableRow>(
+    page: Page, 
+    progressReporter: ProgressReporter,
+    scrapeTableRowData: (tr: ElementHandle<Element>) => Promise<T | undefined>
+):Promise<T[]> => {
     await navigateToFirstTablePage(page);
-    const out: IGraduateJobTableRow[] = []
+    const out: T[] = []
     const totalResults = await scrapeJobTableTotalResults(page) ?? 1;
     progressReporter.nextStep("Scraping job table rows", totalResults)
     let trs = await page.$$(Selectors.JobsTable.Row);

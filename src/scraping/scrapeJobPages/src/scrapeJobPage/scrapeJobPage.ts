@@ -1,36 +1,49 @@
 import { IScrapedJob } from "@internwave/scrapers-api";
 import { Page } from "puppeteer";
 import { Links } from "src/constants/Links";
-import { loadCookies } from "src/scraping/login/src/cookies";
 import { scrapeMapTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/scrapeMapTab";
 import { scrapeOverviewTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/scrapeOverviewTab";
 import { scrapeWorkTermRatings } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/scrapeWorkTermRatings";
-import { IGraduateJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
+import { IJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
+import { getWebpageAsString } from "src/utils/scraping/parsing/evaluateWithRequestDomParser/evaluateWithRequestDomParser";
 
+/**
+ * 
+ * @param page 
+ * @param tableRow 
+ * @param jobDataOverride 
+ * Useful if you want to override the scraped job (from that job page) with data scraped from the table row page
+ * @returns 
+ */
 export const scrapeJobPage = async (
     page: Page,
-    tableRow:  IGraduateJobTableRow
+    tableRow:  IJobTableRow,
+    jobDataOverride: Partial<IScrapedJob> = {}
 ): Promise<IScrapedJob>=> {
-    await loadCookies(page);
-    await Promise.all(
-        [
-            page.goto(Links.GRADUATE_JOBS),
-            page.waitForNavigation()
-        ]
-    )
+    const webpageStr = await getWebpageAsString(page, tableRow.requestBody)
+    const [
+        overviewTabData,
+        mapTabData,
+        workTermRatingsTabData
+    ] = await Promise.all([
+        scrapeOverviewTab(page, webpageStr),
+        scrapeMapTab(page, webpageStr),
+        scrapeWorkTermRatings(page, webpageStr)
+    ]);
     const {
         dates,
         categorizations,
         openings,
         links,
         descriptions
-    } = await scrapeOverviewTab(page, tableRow);
+    } = overviewTabData
     const {
         location
-    } = await scrapeMapTab(page);
+    } = mapTabData
     const {
         charts   
-    } = await scrapeWorkTermRatings(page);
+    } = workTermRatingsTabData
+
     return {
         id: tableRow.id,
         company: {
@@ -47,8 +60,8 @@ export const scrapeJobPage = async (
         descriptions,
         charts,
         openings,
-        jobType: tableRow.positionType ? [tableRow.positionType] : [],
         url: Links.graduateJob(tableRow.id),
         links,
+        ...jobDataOverride
     }
 }

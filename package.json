@@ -1,24 +1,31 @@
 {
-  "name": "scrapers-api",
+  "name": "waterlooworks-scraper",
   "version": "1.0.0",
-  "description": "A helper API for web scrapers in the InternWave desktop application",
+  "description": "A WaterlooWorks be scraper for InternWave's desktop application",
   "main": "./build/index.js",
   "scripts": {
-    "build": "tsup --publicDir --watch"
+    "build": "tsup --publicDir --watch",
+    "test": "vitest --config vitest.config.mts",
+    "lint": "eslint src/**/*.{ts,tsx}"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/he": "^1.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
+    "ts-prune": "^0.10.3",
+    "tsup": "^8.2.4",
     "typescript": "^5.5.2",
-    "typescript-eslint": "^8.3.0"
+    "typescript-eslint": "^8.3.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.2"
   },
   "dependencies": {
-    "async-mutex": "^0.5.0",
+    "axios": "^1.7.7",
+    "he": "^1.2.0",
     "puppeteer": "^23.2.0",
-    "puppeteer-cluster": "^0.24.0",
-    "rxjs": "^7.8.1",
-    "tsup": "^8.2.4"
+    "rxjs": "^7.8.1"
   }
 }

@@ -1,43 +1,34 @@
-import { Cluster } from 'puppeteer-cluster';
-import { Mutex } from 'async-mutex';
+import { from, firstValueFrom } from 'rxjs';
+import { mergeMap, toArray } from 'rxjs/operators';
 import { ProgressReporter, IScrapedJob } from '@internwave/scrapers-api';
 import { scrapeJobPage } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/scrapeJobPage';
-import { IGraduateJobTableRow } from 'src/scraping/scrapeTableRows/src/types/JobTableRow';
+import { Page } from 'puppeteer';
+import { IJobTableRow } from 'src/scraping/scrapeTableRows/src/types/JobTableRow';
 
-const THREADS = 20;
-
+const CONCURRENCY = 4;
+/**
+ * 
+ * @param tableRows 
+ * @param page 
+ * @param progressReporter 
+ * @param jobsDataOverride 
+ * Useful if you want to override the scraped job (from that job page) with data scraped from the table row page
+ * @returns 
+ */
 export const scrapeJobPages = async (
-    tableRows: IGraduateJobTableRow[],
-    progressReporter: ProgressReporter
+    tableRows: IJobTableRow[],
+    page: Page,
+    progressReporter: ProgressReporter,
+    jobsDataOverride: Partial<IScrapedJob>[] = []
 ): Promise<IScrapedJob[]> => {
-    progressReporter.nextStep("Scraping job pages", tableRows.length);
-    const out: IScrapedJob[] = [];
-    const mutex = new Mutex();
+    const rows = tableRows.length;
+    progressReporter.nextStep("Scraping job pages", rows);
 
-    // Create a cluster with the desired number of workers
-    const cluster = await Cluster.launch({
-        concurrency: Cluster.CONCURRENCY_BROWSER,
-        maxConcurrency: THREADS,
-        puppeteerOptions: {
-            headless: true
-        },
-    });
-
-    // Define a task for the cluster
-    await cluster.task(async ({ page, data: row }) => {
-        const result = await scrapeJobPage(page, row);
-            out.push(result);
-            progressReporter.reportProgress(`Scraping job ${out.length} of ${tableRows.length}`);
-    });
-
-    // Queue all table rows
-    for (const row of tableRows) {
-        cluster.queue(row);
-    }
-
-    // Wait for the cluster to finish
-    await cluster.idle();
-    await cluster.close();
-
-    return out;
+    return firstValueFrom(from(tableRows).pipe(
+        mergeMap((row, index) => {
+            progressReporter.reportProgress(`Scraping job page ${index + 1} of ${rows}`);
+            return scrapeJobPage(page, row, jobsDataOverride[index]);
+        }, CONCURRENCY),
+        toArray()
+    ))
 };

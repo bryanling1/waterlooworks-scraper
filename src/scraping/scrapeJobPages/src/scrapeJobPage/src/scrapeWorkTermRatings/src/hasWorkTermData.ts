@@ -1,13 +1,12 @@
 import { Page } from "puppeteer"
 import { Selectors } from "src/constants/Selectors"
+import { evaluateWebpageString } from "src/utils/scraping/parsing/evaluateWithRequestDomParser/evaluateWithRequestDomParser"
 
-export const hasWorkTermData = async (page: Page): Promise<boolean> => {
-    await Promise.race(
-        [
-            page.waitForSelector(Selectors.JobPosting.WorkTermRating.TabldTDs),
-            page.waitForSelector(Selectors.JobPosting.WorkTermRating.Alert)
-        ]
-    )
-    const isNoData = (await page.$(Selectors.JobPosting.WorkTermRating.Alert))?.evaluate(alert => alert.textContent === "There is no data to display")
+export const hasWorkTermData = async (page: Page, webpageStr:string): Promise<boolean> => {
+    const isNoData = await evaluateWebpageString(
+        page, webpageStr, Selectors.JobPosting.WorkTermRating.Alert
+    )((document, selector) => {
+        return document.querySelector(selector)?.textContent === "There is no data to display"
+    });
     return !isNoData
 }

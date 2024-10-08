@@ -1,6 +1,6 @@
-import { parseDateTime } from "src/utils/scraping/parsing/parseDate";
-import { parseNumber } from "src/utils/scraping/parsing/parseNumber";
-import { parseStringArr } from "src/utils/scraping/parsing/parseStringArr";
+import { parseDateTime } from "src/utils/scraping/parsing/parseTableValue/src/parseDate";
+import { parseNumber } from "src/utils/scraping/parsing/parseTableValue/src/parseNumber";
+import { parseDocuments } from "src/utils/scraping/parsing/parseTableValue/src/parseRequiredDocuments";
 
 //ensure keys are normalized with normalizeJobTableKey
 export enum JobDataTableKnownKey {
@@ -18,10 +18,14 @@ const KnownKeyToParseFunction = {
     [JobDataTableKnownKey.JobType]:  (x: string) => x,
     [JobDataTableKnownKey.IfByWebsiteGoTo]: (x: string) => x,
     [JobDataTableKnownKey.ApplicationDeadline]: parseDateTime,
-    [JobDataTableKnownKey.ApplicationDocumentsRequired]: parseStringArr,
+    [JobDataTableKnownKey.ApplicationDocumentsRequired]: parseDocuments,
 };
 
 //add type guard to getDataTableParser
+export function parseJobDataTable(
+    key: JobDataTableKnownKey.JobType, 
+    value: string
+): ReturnType<typeof KnownKeyToParseFunction[JobDataTableKnownKey.JobType]>;
 export function parseJobDataTable(
     key: JobDataTableKnownKey.IfByWebsiteGoTo, 
     value: string
