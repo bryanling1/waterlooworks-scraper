@@ -7,6 +7,8 @@ import { waitForTablePageLoad } from "src/scraping/scrapeTableRows/src/waitForTa
 import { navigateToFirstTablePage } from "src/scraping/scrapeTableRows/src/navigateToFirstTablePage";
 import { TIMEOUT } from "src/constants/Timeout";
 import { IJobTableRow } from "src/scraping/scrapeTableRows/src/types/JobTableRow";
+import { Strings } from "src/constants/Strings";
+import { injectBanner } from "src/utils/scraping/render/injectBanner";
 
 
 export const scrapeTableRows = async <T extends IJobTableRow>(
@@ -17,11 +19,12 @@ export const scrapeTableRows = async <T extends IJobTableRow>(
     await navigateToFirstTablePage(page);
     const out: T[] = []
     const totalResults = await scrapeJobTableTotalResults(page) ?? 1;
-    progressReporter.nextStep("Scraping job table rows", totalResults)
+    progressReporter.nextStep(Strings.scraping.jobTableRows, totalResults)
     let trs = await page.$$(Selectors.JobsTable.Row);
     do {
         await waitForTablePageLoad(page);
         await page.waitForSelector(Selectors.JobsTable.Row,  {timeout: TIMEOUT})
+        await injectBanner(page, Strings.scraping.banner);
         trs = await page.$$(Selectors.JobsTable.Row);
         for(const tr of trs){
             const rowData = await scrapeTableRowData(tr)

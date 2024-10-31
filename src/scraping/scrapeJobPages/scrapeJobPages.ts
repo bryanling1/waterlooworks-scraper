@@ -4,6 +4,7 @@ import { ProgressReporter, IScrapedJob } from '@internwave/scrapers-api';
 import { scrapeJobPage } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/scrapeJobPage';
 import { Page } from 'puppeteer';
 import { IJobTableRow } from 'src/scraping/scrapeTableRows/src/types/JobTableRow';
+import { Strings } from 'src/constants/Strings';
 
 const CONCURRENCY = 4;
 /**
@@ -22,11 +23,11 @@ export const scrapeJobPages = async (
     jobsDataOverride: Partial<IScrapedJob>[] = []
 ): Promise<IScrapedJob[]> => {
     const rows = tableRows.length;
-    progressReporter.nextStep("Scraping job pages", rows);
+    progressReporter.nextStep(Strings.scraping.jobPages, rows);
 
     return firstValueFrom(from(tableRows).pipe(
         mergeMap((row, index) => {
-            progressReporter.reportProgress(`Scraping job page ${index + 1} of ${rows}`);
+            progressReporter.reportProgress(Strings.scraping.jobPage(index + 1, rows));
             return scrapeJobPage(page, row, jobsDataOverride[index]);
         }, CONCURRENCY),
         toArray()

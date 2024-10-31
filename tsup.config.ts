@@ -5,5 +5,6 @@ export default defineConfig({
   format: ["cjs"], // Build for commonJS and ESmodules
   splitting: false,
   sourcemap: true,
-  outDir: "build"
+  noExternal: [ /(.*)/ ],
+  target: "node18"
 });

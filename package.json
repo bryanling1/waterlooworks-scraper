@@ -4,15 +4,18 @@
   "description": "A WaterlooWorks be scraper for InternWave's desktop application",
   "main": "./build/index.js",
   "scripts": {
-    "build": "tsup --publicDir --watch",
+    "build": "yarn copyREADME && yarn copyCHANGELOG && tsup --publicDir --watch",
     "test": "vitest --config vitest.config.mts",
-    "lint": "eslint src/**/*.{ts,tsx}"
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "copyREADME": "copyfiles README.md public",
+    "copyCHANGELOG": "copyfiles CHANGELOG.md public"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/he": "^1.2.3",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "copyfiles": "^2.4.1",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
     "ts-prune": "^0.10.3",
@@ -23,9 +26,13 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
+    "@internwave/scrapers-api": "^1.0.0",
     "axios": "^1.7.7",
     "he": "^1.2.0",
     "puppeteer": "^23.2.0",
     "rxjs": "^7.8.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
