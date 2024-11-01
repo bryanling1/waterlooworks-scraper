@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 import { ProgressReporter } from "@internwave/scrapers-api"
 import { Strings } from "src/constants/Strings";

@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 
 export const isLastTablePage = async(page: Page) => {

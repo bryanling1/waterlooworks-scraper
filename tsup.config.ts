@@ -6,5 +6,6 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   noExternal: [ /(.*)/ ],
-  target: "node18"
+  target: "node18",
+  outDir: "/Users/bryanling/Documents/Projects/internwave/code/client/desktop/apps/scrapers/waterlooworks"
 });

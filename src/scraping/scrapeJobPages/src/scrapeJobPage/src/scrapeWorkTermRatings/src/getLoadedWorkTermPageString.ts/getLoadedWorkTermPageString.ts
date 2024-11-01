@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 import { getWebpageAsString } from "src/utils/scraping/parsing/evaluateWithRequestDomParser/evaluateWithRequestDomParser";
 import { scrapeScriptsContent } from "src/utils/scraping/scripts/scrapeScriptsContent";

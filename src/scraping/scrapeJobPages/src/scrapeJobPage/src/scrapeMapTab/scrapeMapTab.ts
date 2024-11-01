@@ -1,5 +1,5 @@
 import { ILocation } from "@internwave/scrapers-api"
-import { Page } from "puppeteer"
+import { Page } from "puppeteer-core"
 import { Selectors } from "src/constants/Selectors"
 import { AddrewwMatrix } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/src/AddressMatrix"
 import { scrapeRequestBodyFromOnclickWebpageStr } from "src/utils/navigation/postForm/requestBodyFromOnclick/scrapeRequestBodyFromOnclickWebpageStr"

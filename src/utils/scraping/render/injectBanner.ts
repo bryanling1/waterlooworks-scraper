@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 
 export const injectBanner = async (page: Page, comment: string) => {
     await page.evaluate((comment) => {

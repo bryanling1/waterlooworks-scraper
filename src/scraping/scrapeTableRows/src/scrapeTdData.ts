@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "puppeteer-core";
 
 export const scrapeTdData = async (td: ElementHandle<HTMLTableCellElement>, querySelector?: string) => {
     if(querySelector){

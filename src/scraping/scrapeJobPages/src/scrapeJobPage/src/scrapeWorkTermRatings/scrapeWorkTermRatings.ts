@@ -1,5 +1,5 @@
 import { ICharts } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 import { getLoadedWorkTermPageString } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/getLoadedWorkTermPageString.ts/getLoadedWorkTermPageString";
 import { hasWorkTermData } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/hasWorkTermData";

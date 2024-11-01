@@ -1,5 +1,5 @@
 import { ProgressReporter } from "@internwave/scrapers-api";
-import { ElementHandle, Page } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 import { scrapeJobTableTotalResults } from "src/scraping/scrapeTableRows/src/scrapeJobTableTotalResults";
 import { gotoNextTablePage } from "src/scraping/scrapeTableRows/src/gotoNextTablePage";
