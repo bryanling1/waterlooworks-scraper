@@ -11,12 +11,12 @@ export const parseObject = (jsObectString: string) => {
     
     while(i < str.length){
         const keyEndIndex = getFirstMatchIndex(str, /:/, i);
-        const key = str.slice(i, keyEndIndex).match(/(\w+)/)?.[1]
+        const key = str.slice(i, keyEndIndex)?.match(/(\w+)/)?.[1]
         if(!key){
             return out;
         }
         i = getFirstMatchIndex(str, /\S/, keyEndIndex + 1);
-        const valueEndIndex = str[i].match(/[\{\[]/) ? 
+        const valueEndIndex = str[i]?.match(/[\{\[]/) ? 
             getClosingBracketIndex(str, i, str[i] as "[" | "{") : 
             getFirstMatchIndex(str, /,/, i);
         const currentValue = str.slice(i, valueEndIndex).trim()

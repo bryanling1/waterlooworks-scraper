@@ -14,7 +14,7 @@ const getArrayStringStrings = (str: string): string[] => {
     let i=0;
     while(i < target.length){
         i = getFirstMatchIndex(target, /\S/, i);
-        if(target[i].match(/[\{\[]/)){
+        if(target[i]?.match(/[\{\[]/)){
             const endIndex = getClosingBracketIndex(target, i, target[i] as "[" | "{");
             out.push(target.slice(i, endIndex));
             i = getFirstMatchIndex(target, /,/, endIndex) + 1

@@ -1,9 +1,12 @@
 {
-    "name": "UWaterloo: Waterloo Works", 
+    "name": "UWaterloo: WaterlooWorks", 
     "image": "logo.png", 
     "originURL": "https://waterlooworks.uwaterloo.ca/home.htm", 
-    "lastUpdated": 1725658450241,
+    "lastUpdated": 1735075644905,
     "main": "index.js",
+    "version": "1.0.3",
+    "releaseURL": "https://github.com/bryanling1/waterlooworks-scraper/releases/latest",
+    "sourceURL": "https://github.com/bryanling1/waterlooworks-scraper",
     "options" : [
         {
             "label": "Jobs board",
