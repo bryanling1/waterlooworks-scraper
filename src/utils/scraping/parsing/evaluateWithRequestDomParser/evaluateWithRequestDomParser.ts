@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 
 type EvaluateFn<T, Args extends unknown[]> = (document: Document, ...args: Args) => T;
 

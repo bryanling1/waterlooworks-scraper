@@ -2,7 +2,7 @@ import { from, firstValueFrom } from 'rxjs';
 import { mergeMap, toArray } from 'rxjs/operators';
 import { ProgressReporter, IScrapedJob } from '@internwave/scrapers-api';
 import { scrapeJobPage } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/scrapeJobPage';
-import { Page } from 'puppeteer';
+import { Page } from 'puppeteer-core';
 import { IJobTableRow } from 'src/scraping/scrapeTableRows/src/types/JobTableRow';
 import { Strings } from 'src/constants/Strings';
 

@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "puppeteer-core";
 import { IGraduateJobTableRow } from "src/scraping/scrapeJobs/src/scrapeGraduateJobs/src/scrapeGraduateTableRowData/types/GraduateJobTableRow";
 import { scrapeTdData } from "src/scraping/scrapeTableRows/src/scrapeTdData";
 import { scrapeRequestBodyFromOnclick } from "src/utils/navigation/postForm/requestBodyFromOnclick/scrapeRequestBodyFromOnclick";

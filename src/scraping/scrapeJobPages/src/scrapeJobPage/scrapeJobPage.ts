@@ -1,5 +1,5 @@
 import { IScrapedJob } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Links } from "src/constants/Links";
 import { scrapeMapTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/scrapeMapTab";
 import { scrapeOverviewTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/scrapeOverviewTab";

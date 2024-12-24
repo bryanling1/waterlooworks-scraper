@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { Page } from 'puppeteer'
+import { Page } from 'puppeteer-core'
 
 export const saveCookies = async (page: Page) => {
   const cookiesPath = getCookiesPath()

@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import { ElementHandle } from "puppeteer-core";
 import { formatOnclick } from "src/utils/navigation/postForm/requestBodyFromOnclick/formatOnclick";
 
 export const scrapeRequestBodyFromOnclick = async (element: ElementHandle | null, selector=""):Promise<BodyInit | undefined>  => {

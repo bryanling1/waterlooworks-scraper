@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Selectors } from "src/constants/Selectors";
 import { TIMEOUT } from "src/constants/Timeout";
 import { isLastTablePage } from "src/scraping/scrapeTableRows/src/isLastTablePage";

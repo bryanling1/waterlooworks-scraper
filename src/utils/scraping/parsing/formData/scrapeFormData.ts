@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 
 export const scrapeFormData = async (page: Page, formSelector: string): Promise<Record<string, string>> => {
     const formData: Record<string, string> = {}

@@ -1,5 +1,5 @@
 import { IScrapedJob } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { scrapeOverviewPanelTable } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/src/scrapeOverviewPanelTable";
 import { JobDataTableKnownKey, parseJobDataTable } from "src/utils/scraping/parsing/parseTableValue/parseTableValue";
 

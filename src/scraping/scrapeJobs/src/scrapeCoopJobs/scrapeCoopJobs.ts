@@ -1,5 +1,5 @@
 import { ProgressReporter } from "@internwave/scrapers-api";
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 import { Links } from "src/constants/Links";
 import { scrapeJobPages } from "src/scraping/scrapeJobPages/scrapeJobPages";
 import { scrapeTableRows } from "src/scraping/scrapeTableRows/scrapeTableRows";

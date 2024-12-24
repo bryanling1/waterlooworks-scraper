@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import { Page } from "puppeteer-core";
 
 export const submitPostForm = (page: Page, requestBody: BodyInit | Record<string, string>) => {
     return page.evaluate(
