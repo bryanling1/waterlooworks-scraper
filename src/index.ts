@@ -4,6 +4,9 @@ import { login } from 'src/scraping/login/login';
 import { scrapeJobs } from 'src/scraping/scrapeJobs/scrapeJobs';
 
 API.onStartScraping(3)(async (args, progressReporter)=>{
+    if(!args[0] || !args[1]){
+        throw new Error("Missing arguments");
+    }
     const browser = await puppeteer.launch({ 
         headless: false,
         defaultViewport: null,

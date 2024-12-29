@@ -10,6 +10,9 @@ const sanitizeJobTableValue = (value: string) => {
 export const sanitizeRecord = (record: Record<string, string>):Record<string, string> => {
     const out: Record<string, string> = {}
     for(const key in record){
+        if(!record[key]){
+            continue;
+        }
         out[normalizeJobTableKey(key)] = sanitizeJobTableValue(record[key])
     }
     return out;

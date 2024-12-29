@@ -19,6 +19,9 @@ export const scrapeOverviewTab = async (
 
     for(const key in jobPostingInfoTableData){
         const value = jobPostingInfoTableData[key];
+        if(!value){
+            continue
+        }
         switch(key){
             case JobDataTableKnownKey.JobType: {
                 const val = parseJobDataTable(key, value)
@@ -35,7 +38,7 @@ export const scrapeOverviewTab = async (
                 break;
             }
             default:
-                out.descriptions.push({
+                out.descriptions?.push({
                     title: key,
                     content: value,
                     type: "Details"
@@ -45,17 +48,24 @@ export const scrapeOverviewTab = async (
 
     for(const key in applicationDeliveryTableData){
         const value = applicationDeliveryTableData[key];
+        if(!value){
+            continue
+        }
         switch(key){
             case JobDataTableKnownKey.ApplicationDeadline: {
                 const val = parseJobDataTable(key, value)
-                if(val === undefined) break;
-                out.dates.deadlineAt = val;
+                out.dates = {
+                    ...out.dates,
+                    deadlineAt: val
+                }
                 break;
             }
             case JobDataTableKnownKey.ApplicationDocumentsRequired: {
                 const val = parseJobDataTable(key, value)
-                if(val === undefined) break;
-                out.categorizations.applicationDocuments = val;
+                out.categorizations = {
+                    ...out.categorizations,
+                    applicationDocuments: val
+                }
                 break;
             }
             case JobDataTableKnownKey.IfByWebsiteGoTo: {
@@ -71,7 +81,7 @@ export const scrapeOverviewTab = async (
                 break;
             }
             default: 
-                out.descriptions.push({
+                out.descriptions?.push({
                     title: key,
                     content: value,
                     type: "Applying"

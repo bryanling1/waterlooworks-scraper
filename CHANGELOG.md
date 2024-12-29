@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.3
+- Fixed a bug that caused entire scrape to throw if one job failed to scrape
+
 ## v1.0.0
 
 ### Added or Changed
