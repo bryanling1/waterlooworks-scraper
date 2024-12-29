@@ -50,13 +50,9 @@ export const scrapeJobPage = async (
             name: tableRow.organization
         },
         jobTitle: tableRow.jobTitle,
-        dates: {
-            deadlineAt: dates.deadlineAt,
-        },
+        dates,
         location,
-        categorizations: {
-            applicationDocuments: categorizations.applicationDocuments
-        },
+        categorizations,
         descriptions,
         charts,
         openings,

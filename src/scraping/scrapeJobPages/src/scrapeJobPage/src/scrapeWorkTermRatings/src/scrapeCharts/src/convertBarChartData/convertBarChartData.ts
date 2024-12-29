@@ -11,7 +11,7 @@ export const convertBarChartData = (chart: IScrapedBarChart):IChartData | undefi
         [key: string]: number;
     } = {};
     for(let i = 0; i < chart.xAxis.categories.length; i++){
-        const key = chart.xAxis.categories[i].trim();
+        const key = chart.xAxis.categories[i]?.trim();
         const value = chart.series[0].data[i];
         if(key !== undefined && value !== undefined){
             data[key] = value;

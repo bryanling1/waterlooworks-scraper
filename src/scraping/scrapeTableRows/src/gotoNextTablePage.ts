@@ -5,8 +5,11 @@ import { isLastTablePage } from "src/scraping/scrapeTableRows/src/isLastTablePag
 
 export const gotoNextTablePage = async(
     page: Page,
-    firstRowOfCurrentPage: ElementHandle<Element>
+    firstRowOfCurrentPage?: ElementHandle<Element>
 ):Promise<boolean> => {
+    if(!firstRowOfCurrentPage){
+        return false
+    }
     if(await isLastTablePage(page)){
         return false;
     }

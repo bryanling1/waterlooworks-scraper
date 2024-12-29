@@ -1,7 +1,7 @@
 import { ILocation } from "@internwave/scrapers-api"
 import { Page } from "puppeteer-core"
 import { Selectors } from "src/constants/Selectors"
-import { AddrewwMatrix } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/src/AddressMatrix"
+import { AddressMatrix } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/src/AddressMatrix"
 import { scrapeRequestBodyFromOnclickWebpageStr } from "src/utils/navigation/postForm/requestBodyFromOnclick/scrapeRequestBodyFromOnclickWebpageStr"
 import { evaluateWithRequestDomParser } from "src/utils/scraping/parsing/evaluateWithRequestDomParser/evaluateWithRequestDomParser"
 
@@ -24,7 +24,7 @@ export const scrapeMapTab = async (page: Page, webpageStr: string) => {
     if(!addressStr){
         return out
     }
-    const matrix = new AddrewwMatrix(addressStr);
+    const matrix = new AddressMatrix(addressStr);
     out.location = {
         address: matrix.getValue(1, 0),
         city: matrix.getValue(2, 0),

@@ -1,4 +1,4 @@
-export class AddrewwMatrix {
+export class AddressMatrix {
     private addressMatrix: string[][];
     constructor(addressString: string) {
         this.addressMatrix = addressString
