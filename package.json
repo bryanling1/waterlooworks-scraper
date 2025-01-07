@@ -1,6 +1,6 @@
 {
   "name": "waterlooworks-scraper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A WaterlooWorks be scraper for InternWave's desktop application",
   "main": "./build/index.js",
   "scripts": {

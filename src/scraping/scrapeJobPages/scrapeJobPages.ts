@@ -1,5 +1,5 @@
 import { from, firstValueFrom, of } from 'rxjs';
-import { filter, mergeMap, toArray } from 'rxjs/operators';
+import { catchError, filter, mergeMap, toArray } from 'rxjs/operators';
 import { ProgressReporter, IScrapedJob } from '@internwave/scrapers-api';
 import { scrapeJobPage } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/scrapeJobPage';
 import { Page } from 'puppeteer-core';
@@ -28,11 +28,11 @@ export const scrapeJobPages = async (
     return firstValueFrom(from(tableRows).pipe(
         mergeMap((row, index) => {
             progressReporter.reportProgress(Strings.scraping.jobPage(index + 1, rows));
-            try {
-                return scrapeJobPage(page, row, jobsDataOverride[index]);
-            }catch{
-                return of(undefined)
-            }
+            return from(scrapeJobPage(page, row, jobsDataOverride[index])).pipe(
+                catchError(() => {
+                    return of(undefined);
+                })
+            );
         }, CONCURRENCY),
         filter(result => !!result),
         toArray()
