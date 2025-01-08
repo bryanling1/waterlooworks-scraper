@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.5
+- Fixed a bug that caused all URLs to go to graduate jobs page
+
 ## v1.0.4
 - Fixed "Failed to fetch" error when scraping single job page
 

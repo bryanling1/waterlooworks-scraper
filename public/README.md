@@ -19,9 +19,11 @@ See InternWave Desktop's [Scraper API ](https://internwave.com/devs)
 6. Click `Scrape` on the added scraper card
 
 ## Releases
-1. Run `yarn build`, this will create a `dist` folder
-2. Zip the `dist` folder (Make sure to zip the contents of the folder, not the folder itself)
-3. Create a new release on GitHub and upload the zip file
+1. Bump the version in `package.json` and `manifest.json` to the new version number, e.g. `1.0.0` to `1.0.1`
+2. Edit the `CHANGELOG.md` file to include the new version and changes
+3. Run `yarn build`, this will create a `dist` folder
+4. Zip the `dist` folder (Make sure to zip the contents of the folder, not the folder itself)
+5. Create a new release on GitHub and upload the zip file
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
