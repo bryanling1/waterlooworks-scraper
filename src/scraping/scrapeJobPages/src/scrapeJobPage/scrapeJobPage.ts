@@ -1,5 +1,6 @@
 import { IScrapedJob } from "@internwave/scrapers-api";
 import { Page } from "puppeteer-core";
+import { JobBoard } from "src/constants/JobBoards";
 import { Links } from "src/constants/Links";
 import { scrapeMapTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeMapTab/scrapeMapTab";
 import { scrapeOverviewTab } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeOverviewTab/scrapeOverviewTab";
@@ -18,6 +19,7 @@ import { getWebpageAsString } from "src/utils/scraping/parsing/evaluateWithReque
 export const scrapeJobPage = async (
     page: Page,
     tableRow:  IJobTableRow,
+    jobBoard: JobBoard,
     jobDataOverride: Partial<IScrapedJob> = {}
 ): Promise<IScrapedJob>=> {
     const webpageStr = await getWebpageAsString(page, tableRow.requestBody)
@@ -43,6 +45,7 @@ export const scrapeJobPage = async (
     const {
         charts   
     } = workTermRatingsTabData
+    const url = jobBoard === JobBoard.GRADUATING_AND_FULL_TIME ? Links.graduateJob(tableRow.id) : Links.coopJob(tableRow.id)
 
     return {
         id: tableRow.id,
@@ -56,7 +59,7 @@ export const scrapeJobPage = async (
         descriptions,
         charts,
         openings,
-        url: Links.graduateJob(tableRow.id),
+        url,
         links,
         ...jobDataOverride
     }

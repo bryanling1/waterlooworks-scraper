@@ -5,6 +5,7 @@ import { scrapeJobPage } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/scr
 import { Page } from 'puppeteer-core';
 import { IJobTableRow } from 'src/scraping/scrapeTableRows/src/types/JobTableRow';
 import { Strings } from 'src/constants/Strings';
+import { JobBoard } from 'src/constants/JobBoards';
 
 const CONCURRENCY = 4;
 /**
@@ -20,6 +21,7 @@ export const scrapeJobPages = async (
     tableRows: IJobTableRow[],
     page: Page,
     progressReporter: ProgressReporter,
+    board: JobBoard,
     jobsDataOverride: Partial<IScrapedJob>[] = []
 ): Promise<IScrapedJob[]> => {
     const rows = tableRows.length;
@@ -28,7 +30,7 @@ export const scrapeJobPages = async (
     return firstValueFrom(from(tableRows).pipe(
         mergeMap((row, index) => {
             progressReporter.reportProgress(Strings.scraping.jobPage(index + 1, rows));
-            return from(scrapeJobPage(page, row, jobsDataOverride[index])).pipe(
+            return from(scrapeJobPage(page, row, board,jobsDataOverride[index])).pipe(
                 catchError(() => {
                     return of(undefined);
                 })
