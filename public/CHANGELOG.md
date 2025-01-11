@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.6
+- Fixed a bug that caused failing to scrape a job table row to throw the entire scrape
+
 ## v1.0.5
 - Fixed a bug that caused all URLs to go to graduate jobs page
 

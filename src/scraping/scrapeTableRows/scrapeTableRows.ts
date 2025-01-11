@@ -24,14 +24,19 @@ export const scrapeTableRows = async <T extends IJobTableRow>(
     do {
         await waitForTablePageLoad(page);
         await page.waitForSelector(Selectors.JobsTable.Row,  {timeout: TIMEOUT})
-        await injectBanner(page, Strings.scraping.banner);
+        try{
+            await injectBanner(page, Strings.scraping.banner);
+        }catch{/**/}
         trs = await page.$$(Selectors.JobsTable.Row);
         for(const tr of trs){
-            const rowData = await scrapeTableRowData(tr)
-            if(rowData){
-                out.push(rowData)
+            try{
+                const rowData = await scrapeTableRowData(tr)
+                if(rowData){
+                    out.push(rowData)
+                }
+            }catch{/* */}finally{
+                progressReporter.reportProgress();
             }
-            progressReporter.reportProgress();
         }
     } while( await gotoNextTablePage(page, trs[0]) )
     return out;
