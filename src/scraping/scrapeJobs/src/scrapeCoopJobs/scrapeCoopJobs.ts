@@ -5,8 +5,11 @@ import { scrapeJobModals } from "src/scraping/scrapeJobs/src/scrapeJobModals/scr
 import { scrapeTable } from "src/scraping/scrapeJobs/src/scrapeTable/scrapeTable";
 import { IJobRowResponse } from "src/scraping/scrapeJobs/src/scrapeTable/types/Response";
 
-export const scrapeCoopJobs = async (page: Page, progressReporter: ProgressReporter) => {
-    await page.goto(Links.COOP_JOBS);
-    const jobRows:IJobRowResponse[] = await scrapeTable(page, progressReporter);
-    return scrapeJobModals(page, progressReporter, jobRows);
-}
+export const scrapeCoopJobs = async (
+  page: Page,
+  progressReporter: ProgressReporter,
+) => {
+  await page.goto(Links.COOP_JOBS);
+  const jobRows: IJobRowResponse[] = await scrapeTable(page, progressReporter);
+  return scrapeJobModals(page, progressReporter, jobRows);
+};

@@ -7,15 +7,12 @@ import { scrapeJobModals } from "src/scraping/scrapeJobs/src/scrapeJobModals/scr
 import { injectBanner } from "src/utils/scraping/render/injectBanner";
 import { Strings } from "src/constants/Strings";
 
-
-
-export const scrapeGraduateJobs = async (page: Page, progressReporter: ProgressReporter):Promise<IScrapedJob[]> => {
-    await page.goto(Links.GRADUATE_JOBS);
-    await injectBanner(page, Strings.scraping.banner());
-    const jobRows:IJobRowResponse[] = await scrapeTable(page, progressReporter);
-    return scrapeJobModals(page, progressReporter, jobRows);
-}
-
-
-
-
+export const scrapeGraduateJobs = async (
+  page: Page,
+  progressReporter: ProgressReporter,
+): Promise<IScrapedJob[]> => {
+  await page.goto(Links.GRADUATE_JOBS);
+  await injectBanner(page, Strings.scraping.banner());
+  const jobRows: IJobRowResponse[] = await scrapeTable(page, progressReporter);
+  return scrapeJobModals(page, progressReporter, jobRows);
+};

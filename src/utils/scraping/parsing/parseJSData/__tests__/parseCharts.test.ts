@@ -1,28 +1,34 @@
-import { IScrapedBarChart, IScrapedPieChart } from 'src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/types/ScrapedChart';
-import { parseJSData } from 'src/utils/scraping/parsing/parseJSData/parseJSData';
-import { describe, expect, test } from 'vitest';
+import {
+  IScrapedBarChart,
+  IScrapedPieChart,
+} from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/src/types/ScrapedChart";
+import { parseJSData } from "src/utils/scraping/parsing/parseJSData/parseJSData";
+import { describe, expect, test } from "vitest";
 
-
-describe('parse charts', () => {
-    test('Pie chart', () => {
-        const out = parseJSData<IScrapedPieChart>(Charts.pie)
-        expect(out.chart.type).toBe("pie");
-        expect(out.title.text).toBe("Hires by Faculty<br>Amazon.com Inc - Head Office");
-        expect(out.series[0].data).toEqual([
-            { name: "Engineering", y: 35 },
-            { name: "Mathematics", y: 65 }
-        ])
-  })
-  test('Bar graph', async () => {
-    const out = parseJSData<IScrapedBarChart>(Charts.bar)
+describe("parse charts", () => {
+  test("Pie chart", () => {
+    const out = parseJSData<IScrapedPieChart>(Charts.pie);
+    expect(out.chart.type).toBe("pie");
+    expect(out.title.text).toBe(
+      "Hires by Faculty<br>Amazon.com Inc - Head Office",
+    );
+    expect(out.series[0].data).toEqual([
+      { name: "Engineering", y: 35 },
+      { name: "Mathematics", y: 65 },
+    ]);
+  });
+  test("Bar graph", async () => {
+    const out = parseJSData<IScrapedBarChart>(Charts.bar);
     expect(out.chart.type).toBe("bar");
-    expect(out.title.text).toBe("Most Frequently Hired Programs - Amazon.com Inc - Head Office");
+    expect(out.title.text).toBe(
+      "Most Frequently Hired Programs - Amazon.com Inc - Head Office",
+    );
     expect(out.series[0].data).toEqual([169, 56, 36, 13, 8, 5, 5, 4, 3, 3]);
   });
 });
 
 const Charts = {
-    pie: `
+  pie: `
              {
                 chart: {
                         plotBackgroundColor: null,
@@ -72,7 +78,7 @@ const Charts = {
             }]
         }    
         `,
-    bar: `
+  bar: `
        {
           chart: {
           type: "bar"
@@ -137,5 +143,5 @@ const Charts = {
             }
           ]
   }
-    `
-}
+    `,
+};

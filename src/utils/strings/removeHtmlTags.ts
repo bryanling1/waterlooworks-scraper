@@ -1,3 +1,3 @@
-export const removeHtmlTags = (str: string):string => {
-    return str.replace(/<[a-zA-Z]+>|<\/[a-zA-Z]+>/g, "");
-}
+export const removeHtmlTags = (str: string): string => {
+  return str.replace(/<[a-zA-Z]+>|<\/[a-zA-Z]+>/g, "");
+};

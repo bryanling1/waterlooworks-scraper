@@ -10,41 +10,58 @@ import { IJobRowResponse } from "src/scraping/scrapeJobs/src/scrapeTable/types/R
 import { JobDataTableKnownKey } from "src/utils/scraping/parsing/parseTableValue/parseTableValue";
 import { injectBanner } from "src/utils/scraping/render/injectBanner";
 
-export const scrapeJobModals = async (page: Page, progressReporter: ProgressReporter, jobRows: IJobRowResponse[]): Promise<IScrapedJob[]> => {
-    const out:IScrapedJob[] = [];
-    for(const [index, jobRow] of jobRows.entries()){
-        const [postingData, modalStr] = await fetchPostingData(page, jobRow.id);
-        const workTermRatingResponse =  await scrapeCharts(page, postingData.divId);     
-        const [jobInfoMap,applicationDeliveryMap,companyInfoMap] = await scrapeModalPanels(page, modalStr)
+export const scrapeJobModals = async (
+  page: Page,
+  progressReporter: ProgressReporter,
+  jobRows: IJobRowResponse[],
+): Promise<IScrapedJob[]> => {
+  const out: IScrapedJob[] = [];
+  for (const [index, jobRow] of jobRows.entries()) {
+    const [postingData, modalStr] = await fetchPostingData(page, jobRow.id);
+    const workTermRatingResponse = await scrapeCharts(page, postingData.divId);
+    const [jobInfoMap, applicationDeliveryMap, companyInfoMap] =
+      await scrapeModalPanels(page, modalStr);
 
-        const org = companyInfoMap[JobDataTableKnownKey.Organization];
-        const jobTitle = jobInfoMap[JobDataTableKnownKey.JobTitle];
-        if(!org || !jobTitle){
-            continue;
-        }
-        const id = postingData.id.toString();
-        let scrapedJob: IScrapedJob = {
-            id,
-            company: {
-                name: org
-            },
-            location: {},
-            jobTitle: jobTitle,
-            charts: workTermReponseToCharts(postingData.org, workTermRatingResponse)
-        }
-        scrapedJob = mapToScrapedJob(jobInfoMap, scrapedJob);
-        scrapedJob = mapToScrapedJob(applicationDeliveryMap, scrapedJob, "Application");
-        scrapedJob = mapToScrapedJob(companyInfoMap, scrapedJob, "Company");
-        scrapedJob.location = {
-            address: typeof postingData.geoData.address === "string" ? postingData.geoData.address : postingData.geoData.address?.join(", "),
-            city: postingData.geoData.city,
-            country: postingData.geoData.country,
-            postalCode: postingData.geoData.postalCode,
-            state: postingData.geoData.province
-        }
-        out.push(scrapedJob);
-        progressReporter.reportProgress(`Scraped job ${index + 1} of ${jobRows.length}`);
-        await injectBanner(page, Strings.scraping.banner(index + 1, jobRows.length));
+    const org = companyInfoMap[JobDataTableKnownKey.Organization];
+    const jobTitle = jobInfoMap[JobDataTableKnownKey.JobTitle];
+    if (!org || !jobTitle) {
+      continue;
     }
-    return out;
-}
+    const id = postingData.id.toString();
+    let scrapedJob: IScrapedJob = {
+      id,
+      company: {
+        name: org,
+      },
+      location: {},
+      jobTitle: jobTitle,
+      charts: workTermReponseToCharts(postingData.org, workTermRatingResponse),
+    };
+    scrapedJob = mapToScrapedJob(jobInfoMap, scrapedJob);
+    scrapedJob = mapToScrapedJob(
+      applicationDeliveryMap,
+      scrapedJob,
+      "Application",
+    );
+    scrapedJob = mapToScrapedJob(companyInfoMap, scrapedJob, "Company");
+    scrapedJob.location = {
+      address:
+        typeof postingData.geoData.address === "string"
+          ? postingData.geoData.address
+          : postingData.geoData.address?.join(", "),
+      city: postingData.geoData.city,
+      country: postingData.geoData.country,
+      postalCode: postingData.geoData.postalCode,
+      state: postingData.geoData.province,
+    };
+    out.push(scrapedJob);
+    progressReporter.reportProgress(
+      `Scraped job ${index + 1} of ${jobRows.length}`,
+    );
+    await injectBanner(
+      page,
+      Strings.scraping.banner(index + 1, jobRows.length),
+    );
+  }
+  return out;
+};
