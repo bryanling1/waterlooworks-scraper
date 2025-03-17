@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.0
+- Updated Graduate jobs scraper for new WaterlooWorks UI update (late winter 2025)
+- Co-cop scraping needs verification
+
 ## v1.0.6
 - Fixed a bug that caused failing to scrape a job table row to throw the entire scrape
 
