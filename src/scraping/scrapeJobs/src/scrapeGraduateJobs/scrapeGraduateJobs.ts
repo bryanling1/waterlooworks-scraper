@@ -1,19 +1,21 @@
-import { ProgressReporter } from "@internwave/scrapers-api";
+import { IScrapedJob, ProgressReporter } from "@internwave/scrapers-api";
 import { Page } from "puppeteer-core";
 import { Links } from "src/constants/Links";
-import { scrapeGraduateTableRowData } from "src/scraping/scrapeJobs/src/scrapeGraduateJobs/src/scrapeGraduateTableRowData/scrapeGraduateTableRowData";
-import { scrapeJobPages } from "src/scraping/scrapeJobPages/scrapeJobPages";
-import { scrapeTableRows } from "src/scraping/scrapeTableRows/scrapeTableRows";
-import { JobBoard } from "src/constants/JobBoards";
+import { IJobRowResponse } from "src/scraping/scrapeJobs/src/scrapeTable/types/Response";
+import { scrapeTable } from "src/scraping/scrapeJobs/src/scrapeTable/scrapeTable";
+import { scrapeJobModals } from "src/scraping/scrapeJobs/src/scrapeJobModals/scrapeJobModals";
+import { injectBanner } from "src/utils/scraping/render/injectBanner";
+import { Strings } from "src/constants/Strings";
 
-export const scrapeGraduateJobs = async (page: Page, progressReporter: ProgressReporter) => {
+
+
+export const scrapeGraduateJobs = async (page: Page, progressReporter: ProgressReporter):Promise<IScrapedJob[]> => {
     await page.goto(Links.GRADUATE_JOBS);
-    const tableRows = (await scrapeTableRows(page, progressReporter, scrapeGraduateTableRowData))
-    return scrapeJobPages(
-        tableRows, 
-        page, 
-        progressReporter,
-        JobBoard.GRADUATING_AND_FULL_TIME,
-        tableRows.map(row => ({ jobType: row.positionType ? [row.positionType] : [],}))
-    );
+    await injectBanner(page, Strings.scraping.banner());
+    const jobRows:IJobRowResponse[] = await scrapeTable(page, progressReporter);
+    return scrapeJobModals(page, progressReporter, jobRows);
 }
+
+
+
+

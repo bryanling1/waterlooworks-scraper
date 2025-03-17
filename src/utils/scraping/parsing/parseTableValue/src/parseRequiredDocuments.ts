@@ -6,5 +6,5 @@ export const parseDocuments = (value: string): string[] | undefined => {
 
 //For Resume
 const replaceAccentedEs = (input: string): string => {
-    return input.replace(/r�sum�/ig, 'Resume')
+    return input.replace(/r.+sum.+/ig, 'Resume')
 }

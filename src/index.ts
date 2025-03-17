@@ -11,7 +11,7 @@ API.onStartScraping(3)(async (args, progressReporter)=>{
     const browser = await puppeteer.launch({ 
         headless: false,
         defaultViewport: null,
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
     const page = await browser.newPage();
     await page.setJavaScriptEnabled(true);
