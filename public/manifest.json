@@ -4,7 +4,7 @@
     "originURL": "https://waterlooworks.uwaterloo.ca/home.htm", 
     "lastUpdated": 1735075644905,
     "main": "index.js",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "releaseURL": "https://github.com/bryanling1/waterlooworks-scraper/releases/latest",
     "sourceURL": "https://github.com/bryanling1/waterlooworks-scraper",
     "options" : [

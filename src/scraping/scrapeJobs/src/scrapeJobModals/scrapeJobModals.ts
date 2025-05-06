@@ -21,7 +21,6 @@ export const scrapeJobModals = async (
     const workTermRatingResponse = await scrapeCharts(page, postingData.divId);
     const [jobInfoMap, applicationDeliveryMap, companyInfoMap] =
       await scrapeModalPanels(page, modalStr);
-
     const org = companyInfoMap[JobDataTableKnownKey.Organization];
     const jobTitle = jobInfoMap[JobDataTableKnownKey.JobTitle];
     if (!org || !jobTitle) {
