@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.1
+- Fixed a bug that caused scraper to fail to scrape job details from the first tab of the modal
+- Co-cop scraping needs verification
+
 ## v1.1.0
 - Updated Graduate jobs scraper for new WaterlooWorks UI update (late winter 2025)
 - Co-cop scraping needs verification

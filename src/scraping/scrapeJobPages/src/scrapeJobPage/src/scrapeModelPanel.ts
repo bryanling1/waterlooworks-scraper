@@ -9,9 +9,9 @@ export const scrapeModalPanels = async (
   [Record<string, string>, Record<string, string>, Record<string, string>]
 > => {
   return Promise.all([
+    scrapeModalPanel(page, webpage, 1),
+    scrapeModalPanel(page, webpage, 2),
     scrapeModalPanel(page, webpage, 3),
-    scrapeModalPanel(page, webpage, 4),
-    scrapeModalPanel(page, webpage, 5),
   ]);
 };
 const scrapeModalPanel = async (
