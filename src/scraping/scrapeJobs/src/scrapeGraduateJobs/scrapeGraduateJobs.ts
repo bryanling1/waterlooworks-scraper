@@ -14,5 +14,5 @@ export const scrapeGraduateJobs = async (
   await page.goto(Links.GRADUATE_JOBS);
   await injectBanner(page, Strings.scraping.banner());
   const jobRows: IJobRowResponse[] = await scrapeTable(page, progressReporter);
-  return scrapeJobModals(page, progressReporter, jobRows);
+  return scrapeJobModals(page, progressReporter, jobRows, Links.graduateJob);
 };

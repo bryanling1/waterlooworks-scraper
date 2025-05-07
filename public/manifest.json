@@ -2,9 +2,9 @@
     "name": "UWaterloo: WaterlooWorks", 
     "image": "logo.png", 
     "originURL": "https://waterlooworks.uwaterloo.ca/home.htm", 
-    "lastUpdated": 1735075644905,
+    "lastUpdated": 1746639338283,
     "main": "index.js",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "releaseURL": "https://github.com/bryanling1/waterlooworks-scraper/releases/latest",
     "sourceURL": "https://github.com/bryanling1/waterlooworks-scraper",
     "options" : [

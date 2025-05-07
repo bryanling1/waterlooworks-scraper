@@ -6,6 +6,7 @@ import { scrapeCharts } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/
 import { workTermReponseToCharts } from "src/scraping/scrapeJobPages/src/scrapeJobPage/src/scrapeWorkTermRatings/src/scrapeCharts/workTermResponseToCharts";
 import { mapToScrapedJob } from "src/scraping/scrapeJobs/src/mapToScrapedJob";
 import { fetchPostingData } from "src/scraping/scrapeJobs/src/scrapeJobModals/src/fetchPostingData";
+import { getJobTableResponseValue } from "src/scraping/scrapeJobs/src/scrapeTable/src/getJobTableResponseValue";
 import { IJobRowResponse } from "src/scraping/scrapeJobs/src/scrapeTable/types/Response";
 import { JobDataTableKnownKey } from "src/utils/scraping/parsing/parseTableValue/parseTableValue";
 import { injectBanner } from "src/utils/scraping/render/injectBanner";
@@ -14,6 +15,7 @@ export const scrapeJobModals = async (
   page: Page,
   progressReporter: ProgressReporter,
   jobRows: IJobRowResponse[],
+  getJobUrl: (id: string) => string
 ): Promise<IScrapedJob[]> => {
   const out: IScrapedJob[] = [];
   for (const [index, jobRow] of jobRows.entries()) {
@@ -27,14 +29,20 @@ export const scrapeJobModals = async (
       continue;
     }
     const id = postingData.id.toString();
+    const openings = getJobTableResponseValue(jobRow, "Openings")
+    const applicationCount = getJobTableResponseValue(jobRow, "ApplicationCount")
+
     let scrapedJob: IScrapedJob = {
       id,
+      url: getJobUrl(id),
       company: {
         name: org,
       },
       location: {},
       jobTitle: jobTitle,
       charts: workTermReponseToCharts(postingData.org, workTermRatingResponse),
+      openings: typeof openings === "number" ? openings : undefined,
+      applications: typeof applicationCount === "number" ? applicationCount : undefined,
     };
     scrapedJob = mapToScrapedJob(jobInfoMap, scrapedJob);
     scrapedJob = mapToScrapedJob(

@@ -9,6 +9,12 @@ export const mapToScrapedJob = (
   out: IScrapedJob,
   descriptionType = "Details",
 ): IScrapedJob => {
+  out.descriptions = out.descriptions || [];
+  out.descriptions.push({
+    title: "Job ID",
+    content: out.id,
+    type: "Job ID",
+  })
   for (const key in map) {
     const value = map[key];
     if (!value) {
@@ -33,6 +39,13 @@ export const mapToScrapedJob = (
         out.dates = {
           ...out.dates,
           deadlineAt: parseJobDataTable(key, value),
+        };
+        break;
+      }
+      case JobDataTableKnownKey.workTermDuration: {
+        out.dates = {
+          ...out.dates,
+          duration: parseJobDataTable(key, value),
         };
         break;
       }
