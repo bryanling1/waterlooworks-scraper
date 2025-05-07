@@ -1,6 +1,7 @@
 import { parseDateTime } from "src/utils/scraping/parsing/parseTableValue/src/parseDate";
 import { parseNumber } from "src/utils/scraping/parsing/parseTableValue/src/parseNumber";
 import { parseDocuments } from "src/utils/scraping/parsing/parseTableValue/src/parseRequiredDocuments";
+import { parseStringArr } from "src/utils/scraping/parsing/parseTableValue/src/parseStringArr";
 
 //ensure keys are normalized with normalizeJobTableKey
 export enum JobDataTableKnownKey {
@@ -11,6 +12,8 @@ export enum JobDataTableKnownKey {
   ApplicationDocumentsRequired = "application documents required",
   JobOpenings = "job openings",
   Organization = "organization",
+  workTermDuration = "work term duration",
+  locationArrangement = "employment location arrangement" //app doesn't support yet
 }
 
 const KnownKeyToParseFunction = {
@@ -21,6 +24,8 @@ const KnownKeyToParseFunction = {
   [JobDataTableKnownKey.ApplicationDeadline]: parseDateTime,
   [JobDataTableKnownKey.ApplicationDocumentsRequired]: parseDocuments,
   [JobDataTableKnownKey.Organization]: (x: string) => x,
+  [JobDataTableKnownKey.workTermDuration]: parseStringArr,
+  [JobDataTableKnownKey.locationArrangement]: parseStringArr,
 };
 
 //add type guard to getDataTableParser
@@ -61,6 +66,18 @@ export function parseJobDataTable(
   value: string,
 ): ReturnType<
   (typeof KnownKeyToParseFunction)[JobDataTableKnownKey.Organization]
+>;
+export function parseJobDataTable(
+  key: JobDataTableKnownKey.workTermDuration,
+  value: string,
+): ReturnType<
+  (typeof KnownKeyToParseFunction)[JobDataTableKnownKey.workTermDuration]
+>;
+export function parseJobDataTable(
+  key: JobDataTableKnownKey.locationArrangement,
+  value: string,
+): ReturnType<
+  (typeof KnownKeyToParseFunction)[JobDataTableKnownKey.locationArrangement]
 >;
 export function parseJobDataTable(key: JobDataTableKnownKey, value: string) {
   return KnownKeyToParseFunction[key]?.(value);
