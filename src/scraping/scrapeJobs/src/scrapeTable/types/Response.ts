@@ -10,7 +10,7 @@ export interface IJobRowResponse {
   id: string;
   data: {
     key: string;
-    value: number | string | IJobTableJobTitleResponse;
+    value: number | string | IJobTableJobTitleResponse | boolean;
   }[];
 }
 
