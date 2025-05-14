@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.3
+- Added support for labeling jobs as "For My Program"
+
 ## v1.1.2
 - Added missing job openings, application numbers, duration, to jobs table (co-op jobs)
 - Added the JobID to the details section. There is currently no known way of querying the original job page via URL, so the ID is provided for search purposes.

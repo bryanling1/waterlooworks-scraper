@@ -31,7 +31,11 @@ export const scrapeJobModals = async (
     const id = postingData.id.toString();
     const openings = getJobTableResponseValue(jobRow, "Openings")
     const applicationCount = getJobTableResponseValue(jobRow, "ApplicationCount")
-
+    const isMyProgram = getJobTableResponseValue(jobRow, "ForMyProgram")
+    const specialRequirements: string[] = [];
+    if(typeof isMyProgram === "boolean" && isMyProgram) {
+      specialRequirements.push("For My Program")
+    }
     let scrapedJob: IScrapedJob = {
       id,
       url: getJobUrl(id),
@@ -43,6 +47,9 @@ export const scrapeJobModals = async (
       charts: workTermReponseToCharts(postingData.org, workTermRatingResponse),
       openings: typeof openings === "number" ? openings : undefined,
       applications: typeof applicationCount === "number" ? applicationCount : undefined,
+      categorizations: {
+        specialRequirements,
+      }
     };
     scrapedJob = mapToScrapedJob(jobInfoMap, scrapedJob);
     scrapedJob = mapToScrapedJob(
